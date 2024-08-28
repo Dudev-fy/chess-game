@@ -9,5 +9,39 @@ namespace board {
             this.columns = columns;
             pieces = new Piece[lines, columns];
         }
+
+        public Piece piece(int line, int column) {
+            return pieces[line, column];
+        }
+        
+        public Piece piece(Position pos) {
+            return pieces[pos.line, pos.column];
+        }
+
+        public bool isPositionFull(Position pos) {
+            validatePosition(pos);
+            return piece(pos) != null;
+        }
+
+        public void placePiece(Piece p, Position pos) {
+            if (isPositionFull(pos)) {
+                throw new BoardException("Position is full");
+            }
+            pieces[pos.line, pos.column] = p;
+            p.position = pos;
+        }
+
+        public bool isPositionValid(Position pos) {
+            if (pos.line < 0 || pos.line >= lines || pos.column < 0 || pos.column >= columns) {
+                return false;
+            }
+            return true;
+        }
+
+        public void validatePosition(Position pos) {
+            if (!isPositionValid(pos)) {
+                throw new BoardException("Invalid position");
+            }
+        }
     }
 }
