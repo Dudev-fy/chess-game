@@ -8,7 +8,26 @@ namespace chess_console {
             try {
                 ChessMatch match = new ChessMatch();
 
-                Screen.printBoard(match.board);
+                while (!match.isGameFinished) {
+
+                    Console.Clear();
+                    Screen.printBoard(match.board);
+
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.readChessPosition().toPosition();
+
+                    bool [,] possiblePositions = match.board.piece(origin).possibleMovements();
+
+                    Console.Clear();
+                    Screen.printBoard(match.board, possiblePositions);
+
+                    Console.WriteLine();
+                    Console.Write("Destiny: ");
+                    Position destiny = Screen.readChessPosition().toPosition();
+
+                    match.executeMovement(origin, destiny);
+                }
 
             } catch (BoardException e) {
                 Console.WriteLine(e.Message);

@@ -1,5 +1,5 @@
 namespace board {
-    class Piece {
+    abstract class Piece {
         public Position position { get; set; }
         public Color color { get; protected set; }
         public int qtdMovements { get; protected set; }
@@ -15,5 +15,7 @@ namespace board {
         public void incrementQtdMovements() {
             qtdMovements++;
         }
+
+        public abstract bool[,] possibleMovements();
     }
 }
