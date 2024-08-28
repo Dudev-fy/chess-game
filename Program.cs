@@ -5,11 +5,14 @@ using chess;
 namespace chess_console {
     class Program {
         static void Main(string[] args) {
-            ChessPosition pos = new ChessPosition('a', 1);
+            try {
+                ChessMatch match = new ChessMatch();
 
-            Console.WriteLine(pos);
+                Screen.printBoard(match.board);
 
-            Console.WriteLine(pos.toPosition());
+            } catch (BoardException e) {
+                Console.WriteLine(e.Message);
+            }
 
             Console.ReadLine();
         }
