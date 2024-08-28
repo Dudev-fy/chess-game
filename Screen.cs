@@ -1,6 +1,6 @@
 using board;
 
-namespace chess {
+namespace chess_console {
     class Screen {
         public static void printBoard(Board board) {
             for (int i=0; i < board.lines; i++) {
