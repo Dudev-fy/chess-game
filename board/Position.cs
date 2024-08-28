@@ -1,4 +1,4 @@
-namespace Board {
+namespace board {
     class Position {
         public int line { get; set; }
         public int column { get; set; }
