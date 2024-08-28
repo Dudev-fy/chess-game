@@ -51,7 +51,7 @@ namespace chess_console {
                 Console.Write("- ");
             }
             else {
-                if (piece.color == Color.Black) {
+                if (piece.color == Color.White) {
                     Console.Write(piece);
                 }
                 else {

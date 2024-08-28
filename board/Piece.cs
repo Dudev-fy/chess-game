@@ -16,6 +16,22 @@ namespace board {
             qtdMovements++;
         }
 
+        public bool isTherePossibleMovements() {
+            bool [,] mat = possibleMovements();
+            for (int i=0; i<board.lines; i++) {
+                for (int j=0; j<board.columns; j++) {
+                    if (mat[i, j]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool canBeMovedTo(Position pos) {
+            return possibleMovements()[pos.line, pos.column];
+        }
+
         public abstract bool[,] possibleMovements();
     }
 }
