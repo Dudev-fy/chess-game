@@ -1,9 +1,40 @@
 using board;
 using System;
+using System.Collections.Generic;
 using chess;
 
 namespace chess_console {
     class Screen {
+        public static void printMatch(ChessMatch match) {
+            Screen.printBoard(match.board);
+            Console.WriteLine();
+            printCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Shift: " + match.shift);
+            Console.WriteLine("Awaiting play: " + match.currentPlayer);
+        }
+
+        public static void printCapturedPieces(ChessMatch match) {
+            Console.WriteLine("Captured pieces:");
+            Console.Write("Whites: ");
+            printCollection(match.getCapturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Blacks: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            printCollection(match.getCapturedPieces(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void printCollection(HashSet<Piece> collection) {
+            Console.Write("[");
+            foreach (Piece x in collection) {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+
+        }
         public static void printBoard(Board board) {
             for (int i=0; i < board.lines; i++) {
                 Console.Write(8 - i + " ");

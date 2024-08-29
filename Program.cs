@@ -12,10 +12,7 @@ namespace chess_console {
 
                     try {
                         Console.Clear();
-                        Screen.printBoard(match.board);
-                        Console.WriteLine();
-                        Console.WriteLine("Shift: " + match.shift);
-                        Console.WriteLine("Awaiting play: " + match.currentPlayer);
+                        Screen.printMatch(match);
 
                         Console.WriteLine();
                         Console.Write("Origin: ");
