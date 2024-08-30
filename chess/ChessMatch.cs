@@ -9,10 +9,12 @@ namespace chess {
         public bool isGameFinished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> capturedPieces;
+        public bool xeque { get; private set; }
 
         public ChessMatch() {
             board = new Board(8, 8);
             shift = 1;
+            xeque = false;
             currentPlayer = Color.White;
             isGameFinished = false;
             pieces = new HashSet<Piece>();
@@ -20,7 +22,7 @@ namespace chess {
             placePieces();
         }
 
-        private void executeMovement(Position origin, Position destiny) {
+        private Piece executeMovement(Position origin, Position destiny) {
             Piece p = board.withdrawPiece(origin);
             p.incrementQtdMovements();
             Piece takenPiece = board.withdrawPiece(destiny);
@@ -28,12 +30,43 @@ namespace chess {
             if (takenPiece != null) {
                 capturedPieces.Add(takenPiece);
             }
+            return takenPiece;
+        }
+
+        public void undoMovement(Position origin, Position destiny, Piece takenPiece) {
+            Piece p = board.withdrawPiece(destiny);
+            p.decrementQtdMovements();
+
+            if (takenPiece != null) {
+                board.placePiece(takenPiece, destiny);
+                capturedPieces.Remove(takenPiece);
+            }
+
+            board.placePiece(p, origin);
         }
 
         public void makePlay(Position origin, Position destiny) {
-            executeMovement(origin, destiny);
-            shift++;
-            changePlayer();
+            Piece takenPiece = executeMovement(origin, destiny);
+
+            if (isInXeque(currentPlayer)) {
+                undoMovement(origin, destiny, takenPiece);
+                throw new BoardException("You can not put yourself in xeque");
+            }
+
+            if (isInXeque(adversaryColor(currentPlayer))) {
+                xeque = true;
+            }
+            else {
+                xeque = false;
+            }
+
+            if (isXequeMate(adversaryColor(currentPlayer))) {
+                isGameFinished = true;
+            }
+            else {
+                shift++;
+                changePlayer();
+            }
         }
 
         public void validateOriginPosition(Position pos) {
@@ -49,7 +82,7 @@ namespace chess {
         }
 
         public void validateDestinyPosition(Position origin, Position destiny) {
-            if (!board.piece(origin).canBeMovedTo(destiny)) {
+            if (!board.piece(origin).isMovePossible(destiny)) {
                 throw new BoardException("Invalid destiny position");
             }
         }
@@ -82,6 +115,63 @@ namespace chess {
             }
             aux.ExceptWith(getCapturedPieces(color));
             return aux;
+        }
+
+        private Color adversaryColor(Color color) {
+            if (color == Color.White) {
+                return Color.Black;
+            }
+            else {
+                return Color.White;
+            }
+        }
+
+        private Piece getKing(Color color) {
+            foreach (Piece x in getInGamePieces(color)) {
+                if (x is King) {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public bool isInXeque(Color color) {
+            Piece king = getKing(color);
+            if (king == null) {
+                throw new BoardException("There is no King of " + color + "color in the game");
+            }
+
+            foreach (Piece x in getInGamePieces(adversaryColor(color))) {
+                bool [,] mat = x.possibleMovements();
+                if (mat[king.position.line, king.position.column]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool isXequeMate(Color color) {
+            if (!isInXeque(color)) {
+                return false;
+            }
+            foreach (Piece x in getInGamePieces(color)) {
+                bool [,] mat = x.possibleMovements();
+                for (int i=0; i<board.lines; i++) {
+                    for (int j=0; j<board.columns; j++) {
+                        if (mat[i, j]) {
+                            Position origin = x.position;
+                            Position destiny = new Position(i, j);
+                            Piece takenPiece = executeMovement(origin, destiny);
+                            bool isXeque = isInXeque(color);
+                            undoMovement(origin, destiny, takenPiece);
+                            if (!isXeque) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         private void placeNewPiece(char column, int line, Piece piece) {

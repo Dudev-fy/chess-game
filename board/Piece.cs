@@ -16,6 +16,10 @@ namespace board {
             qtdMovements++;
         }
 
+        public void decrementQtdMovements() {
+            qtdMovements--;
+        }
+
         public bool isTherePossibleMovements() {
             bool [,] mat = possibleMovements();
             for (int i=0; i<board.lines; i++) {
@@ -28,7 +32,7 @@ namespace board {
             return false;
         }
 
-        public bool canBeMovedTo(Position pos) {
+        public bool isMovePossible(Position pos) {
             return possibleMovements()[pos.line, pos.column];
         }
 

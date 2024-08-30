@@ -35,6 +35,10 @@ namespace chess_console {
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
                     }
+                    catch {
+                        Console.WriteLine("Invalid input");
+                        Console.ReadLine();
+                    }
                 }
 
             } catch (BoardException e) {

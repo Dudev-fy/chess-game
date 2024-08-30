@@ -21,7 +21,7 @@ namespace chess {
 
             Position pos = new Position(0, 0);
 
-            // esquerda
+            // left
             pos.defineValues(position.line, position.column - 1);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -31,7 +31,7 @@ namespace chess {
                 pos.defineValues(pos.line, pos.column - 1);
             }
 
-            // direita
+            // right
             pos.defineValues(position.line, position.column + 1);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -41,7 +41,7 @@ namespace chess {
                 pos.defineValues(pos.line, pos.column + 1);
             }
 
-            // acima
+            // up
             pos.defineValues(position.line - 1, position.column);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -51,7 +51,7 @@ namespace chess {
                 pos.defineValues(pos.line - 1, pos.column);
             }
 
-            // abaixo
+            // down
             pos.defineValues(position.line + 1, position.column);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -61,7 +61,7 @@ namespace chess {
                 pos.defineValues(pos.line + 1, pos.column);
             }
 
-            // NO
+            // nw
             pos.defineValues(position.line - 1, position.column - 1);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -71,7 +71,7 @@ namespace chess {
                 pos.defineValues(pos.line - 1, pos.column - 1);
             }
 
-            // NE
+            // ne
             pos.defineValues(position.line - 1, position.column + 1);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -81,7 +81,7 @@ namespace chess {
                 pos.defineValues(pos.line - 1, pos.column + 1);
             }
 
-            // SE
+            // se
             pos.defineValues(position.line + 1, position.column + 1);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
@@ -91,7 +91,7 @@ namespace chess {
                 pos.defineValues(pos.line + 1, pos.column + 1);
             }
 
-            // SO
+            // sw
             pos.defineValues(position.line + 1, position.column - 1);
             while (board.isPositionValid(pos) && canMove(pos)) {
                 mat[pos.line, pos.column] = true;
